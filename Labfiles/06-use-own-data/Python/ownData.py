@@ -9,7 +9,7 @@ def main():
         
     try:
         # Flag to show citations
-        show_citations = False
+        show_citations = True
 
         # Get configuration settings 
         load_dotenv()
@@ -29,7 +29,17 @@ def main():
         # Get the prompt
         text = input('\nEnter a question:\n')
 
-        # Configure your data source
+        # Configure your data source# Configure your data source
+        extension_config = dict(dataSources = [  
+                { 
+                    "type": "AzureCognitiveSearch", 
+                    "parameters": { 
+                        "endpoint":azure_search_endpoint, 
+                        "key": azure_search_key, 
+                        "indexName": azure_search_index,
+                    }
+                }]
+            )
 
 
         # Send request to Azure OpenAI model
@@ -56,7 +66,7 @@ def main():
             citations = response.choices[0].message.context["messages"][0]["content"]
             citation_json = json.loads(citations)
             for c in citation_json["citations"]:
-                print("  Title: " + c['title'] + "\n    URL: " + c['url'])
+                print("  Title: " + c['title'])
 
 
         
